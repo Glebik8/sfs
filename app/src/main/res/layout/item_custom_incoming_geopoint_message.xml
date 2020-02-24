@@ -1,0 +1,84 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:map="http://schemas.android.com/tools"
+    android:layout_marginBottom="8dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginTop="8dp">
+    <RelativeLayout
+        android:id="@+id/rel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/bor"
+        >
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@id/messageUserAvatar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:src="#d6d6d6"
+            app:civ_border_color="#FF000000"
+            app:civ_border_width="0dp"  />
+
+        <TextView
+            android:id="@+id/NameTextImage"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:gravity="center"
+            android:text=""
+            android:textColor="#ffffff"
+            android:textSize="20sp" />
+        <!--this view is needed for custom holder-->
+
+        <ImageView
+            android:id="@+id/onlineIndicator"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_alignEnd="@id/messageUserAvatar"
+            android:layout_alignRight="@id/messageUserAvatar"
+            android:layout_alignTop="@id/messageUserAvatar"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/bor"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginEnd="@dimen/message_incoming_bubble_margin_right"
+        android:layout_marginRight="@dimen/message_incoming_bubble_margin_right"
+        android:layout_toEndOf="@id/rel"
+        android:layout_toRightOf="@id/rel"
+        android:orientation="vertical"
+
+        >
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/mapView"
+        android:background="@drawable/edit_text_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="2dp"
+
+        app:liteMode="true"
+        map:mapType="normal"
+        map:cameraZoom="15"
+        />
+    </RelativeLayout>
+    <TextView
+        android:id="@id/messageTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@id/bor"
+        android:layout_alignRight="@id/bor"
+        android:layout_below="@id/bor"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"/>
+
+
+
+</RelativeLayout>

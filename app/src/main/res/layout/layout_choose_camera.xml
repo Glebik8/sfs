@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_root"
+    android:layout_width="match_parent"
+    android:layout_height="220dp"
+    android:orientation="vertical"
+    android:background="#00ffffff"
+    android:padding="15dp" >
+
+    <LinearLayout
+        android:layout_above="@id/CanselTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/round1"
+        android:padding="10dp"
+        >
+        <TextView
+            android:id="@+id/CameraTextView"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Камера"
+            android:textSize="20dp"
+            android:textColor="#5d9ece"
+            android:gravity="center"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:background="#000000"/>
+        <TextView
+            android:id="@+id/GalleryTextView"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Библеотека изображений"
+            android:textSize="20dp"
+            android:textColor="#5d9ece"
+            android:gravity="center"
+            />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/CanselTextView"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Отмена"
+        android:textSize="20dp"
+        android:textColor="#5d9ece"
+        android:gravity="center"
+        android:background="@drawable/round1"
+
+        />
+</RelativeLayout>

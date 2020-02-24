@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">1pedal</string>
+    <string name="title_activity_maps">Map</string>
+
+    <string name="hint_enter_a_message">Ваше сообщение…</string>
+    <string name="on_log_click_message">Your custom long click handler</string>
+    <string name="action_delete">Удалить</string>
+    <string name="action_copy">Копировать</string>
+    <string name="copied_message">Скопировано!</string>
+
+    <string name="date_header_today">Сегодня</string>
+    <string name="date_header_yesterday">Вчера</string>
+
+    <string-array name="view_types_dialog">
+        <item name="image">Изображение (default)</item>
+        <item name="voice">Voice message/Голосовое сообщение (custom)</item>
+    </string-array>
+
+    <string name="start_typing_status">Start typing</string>
+    <string name="stop_typing_status">Stop typing</string>
+
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+    <string name="fcm_message">FCM Message</string>
+    <string name="back"><![CDATA[<-]]></string>
+
+    <string name="today">Today is the day</string>
+</resources>

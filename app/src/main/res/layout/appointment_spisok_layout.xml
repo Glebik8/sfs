@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="70sp"
+        android:background="#dddddd"
+        android:paddingBottom="0.1dp">
+
+        <TextView
+
+            android:id="@+id/ContNameText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#f9f9f9"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:text="Запись"
+            android:textColor="#000000"
+            android:textSize="17dp" />
+        <TextView
+            android:id="@+id/BackText"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text=""
+            android:gravity="center"
+            android:textColor="#000000"
+            android:drawableLeft="@drawable/ic_arrow_back_black_24dp"
+            android:paddingLeft="15sp"
+            />
+    </RelativeLayout>
+   <ScrollView
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:layout_marginTop="70dp"
+       >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="Ожидают поддтвеждения"
+            android:paddingLeft="15dp"
+            android:gravity="center_vertical"
+            android:textColor="#000000"
+            android:background="#dddddd"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/WaitAppointListView"
+            />
+        <TextView
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="Поддтвержденные"
+            android:paddingLeft="15dp"
+            android:gravity="center_vertical"
+            android:textColor="#000000"
+            android:background="#dddddd"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/OkAppointListView"
+            />
+        <TextView
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="Архив"
+            android:paddingLeft="15dp"
+            android:gravity="center_vertical"
+            android:textColor="#000000"
+            android:background="#dddddd"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/ArhivListView"
+            />
+    </LinearLayout>
+</ScrollView>
+</RelativeLayout>

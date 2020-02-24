@@ -1,0 +1,43 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginTop="8dp">
+
+    <RelativeLayout
+        android:id="@+id/rel"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginStart="40dp"
+        >
+    <ProgressBar
+        android:id="@+id/progressBar2"
+        style="?android:attr/progressBarStyle"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <com.github.siyamed.shapeimageview.mask.PorterShapeImageView
+        android:id="@id/image"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:siShape="@drawable/shape_outcoming_message"
+        app:siSquare="false"/>
+
+</RelativeLayout>
+    <TextView
+        android:id="@id/messageTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/rel"
+        android:layout_alignEnd="@id/rel"
+        android:layout_below="@id/rel"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"/>
+
+</RelativeLayout>

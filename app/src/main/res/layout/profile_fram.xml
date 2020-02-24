@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    tools:context=".Auth_Registr.RegistrActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="70sp"
+        android:background="#dddddd"
+        android:paddingBottom="0.1dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Профиль"
+            android:textColor="#000000"
+            android:textSize="17dp"
+            android:fontFamily="sans-serif-medium"
+            android:background="#f9f9f9"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/lin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="70sp"
+        android:background="#EFEFF4"
+        android:orientation="vertical">
+
+        <RelativeLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="70sp"
+            android:layout_marginTop="20dp">
+
+          <RelativeLayout
+              android:id="@+id/ClickEventImage"
+              android:layout_width="70dp"
+              android:layout_height="70dp"
+              android:layout_centerInParent="true"
+              android:background="@drawable/back">
+
+              <com.custom.cn.CircleImageView
+                  android:id="@+id/profile_image"
+                  android:layout_width="70dp"
+                  android:layout_height="70dp"
+                  android:layout_centerInParent="true"
+                  android:src="#d6d6d6"
+                  android:background="@drawable/back"
+                  app:civ_border_color="#d93cf1"
+                  app:civ_border_overlay="false"
+                  app:civ_border_width="0dp" />
+
+
+            <TextView
+                android:visibility="visible"
+                android:id="@+id/NameTextImage"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text=""
+
+                android:textColor="#ffffff"
+                android:textSize="25sp" /></RelativeLayout>
+            <TextView
+                android:id="@+id/ExitTextView"
+                android:layout_marginRight="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:gravity="center"
+                android:text="Выход"
+                android:textColor="#5d9ece"
+                android:textSize="15sp" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/NameTextView"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:textColor="#000000"
+            android:text="Name"
+            android:gravity="center"
+            android:textSize="20sp"
+            />
+        <TextView
+            android:id="@+id/ModelTextView"
+             android:layout_marginTop="10dp"
+             android:layout_width="match_parent"
+             android:layout_height="40dp"
+             android:textColor="#000000"
+             android:background="#ffffff"
+             android:gravity="center"
+            android:text="Model"
+            android:textSize="20sp"
+            />
+
+        <TextView
+            android:id="@+id/TireTextView"
+            android:layout_marginTop="1dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:textColor="#000000"
+            android:background="#ffffff"
+            android:gravity="center"
+            android:text="Шины"
+            android:textSize="20sp"
+            />
+        <TextView
+            android:id="@+id/DiskTextView"
+            android:layout_marginTop="1dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:textColor="#000000"
+            android:background="#ffffff"
+            android:gravity="center"
+            android:text="Диски"
+            android:textSize="20sp"
+            />
+        <TextView
+
+            android:id="@+id/ParamTextView"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:textColor="#000000"
+            android:background="#ffffff"
+            android:gravity="center"
+            android:text="Основные параметры"
+            android:textSize="20sp"
+            android:visibility="gone"
+            />
+    </LinearLayout>
+
+
+
+</RelativeLayout>

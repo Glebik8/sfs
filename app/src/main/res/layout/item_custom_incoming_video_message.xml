@@ -1,0 +1,87 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginTop="8dp">
+    <RelativeLayout
+        android:id="@+id/rel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/bubble"
+        >
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@id/UserAvatar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:src="#d6d6d6"
+        app:civ_border_color="#FF000000"
+        app:civ_border_width="0dp"  />
+
+    <TextView
+        android:id="@+id/NameTextImage"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:gravity="center"
+        android:text=""
+        android:textColor="#ffffff"
+        android:textSize="15sp" />
+    <!--this view is needed for custom holder-->
+
+
+    <ImageView
+        android:id="@+id/onlineIndicator"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_alignEnd="@id/UserAvatar"
+        android:layout_alignRight="@id/UserAvatar"
+        android:layout_alignTop="@id/UserAvatar"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@id/bubble"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_toEndOf="@id/rel"
+        android:layout_toRightOf="@id/rel"
+        android:orientation="vertical">
+        <ProgressBar
+            android:id="@+id/progressBar2"
+            style="?android:attr/progressBarStyle"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="#000000">
+
+            <ImageView
+                android:id="@+id/PlayImage"
+                android:layout_width="60sp"
+                android:layout_height="60sp"
+                android:src="@drawable/play_icon"
+                android:layout_centerInParent="true"/>
+        </RelativeLayout>
+    </RelativeLayout>
+    <TextView
+        android:id="@id/messageTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@id/bubble"
+        android:layout_alignRight="@id/bubble"
+        android:layout_below="@id/bubble"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"/>
+
+</RelativeLayout>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+    <TextView
+        android:id="@+id/TextBodyView"
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:text="Заявка ожидпет подтверждение 44444444 GGGGG GGGGGGGGGGG GGGGGGGGGGGGGGGG"
+        android:textColor="#000000" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+
+        >
+    <TextView
+        android:id="@+id/NoTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Отклонить"
+        android:gravity="right"
+        android:textColor="#5d9ece"
+
+        />
+        <TextView
+            android:id="@+id/OkTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Принять"
+            android:gravity="right"
+            android:textColor="#5d9ece"
+
+            />
+        <TextView
+            android:id="@+id/ChangeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Изменить"
+            android:gravity="right"
+            android:textColor="#5d9ece"
+
+            />
+</LinearLayout>
+</LinearLayout>

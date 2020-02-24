@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:mask="http://schemas.android.com/apk/res-auto"
+    android:background="#ffffff">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="70sp"
+        android:background="#dddddd"
+        android:paddingBottom="0.1dp">
+        <TextView
+            android:id="@+id/ContNameText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Добавить сервис"
+            android:textColor="#000000"
+            android:textSize="17dp"
+            android:fontFamily="sans-serif-medium"
+            android:background="#f9f9f9"/>
+
+        <TextView
+            android:id="@+id/BackText"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text=""
+            android:gravity="center"
+            android:textColor="#000000"
+            android:drawableLeft="@drawable/ic_arrow_back_black_24dp"
+            android:paddingLeft="15sp"
+            />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="70dp">
+        <LinearLayout
+            android:padding="10sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <br.com.sapereaude.maskedEditText.MaskedEditText
+                android:id="@+id/NumberTextView"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_text_background"
+                android:padding="5dp"
+                mask:allowed_chars="1234567890"
+                mask:mask="+7##########"
+                android:inputType="phone"
+                android:lines="1"
+                />
+            <TextView
+                android:id="@+id/CompTextView"
+                android:layout_weight="2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Готово"
+                android:textColor="#5d9ece"
+                android:textSize="17dp"
+                android:gravity="center_vertical|center_horizontal"/>
+
+        </LinearLayout>
+   <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+       android:padding="10dp"
+        android:text="Введите номер телефона сервиса в формате +71231231230"
+        android:textSize="17dp"
+        android:gravity="left"/>
+    </LinearLayout>
+</RelativeLayout>

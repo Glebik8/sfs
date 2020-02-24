@@ -1,0 +1,79 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginBottom="8dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginTop="8dp">
+
+    <RelativeLayout
+        android:id="@+id/rel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/bubble"
+        >
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@id/UserAvatar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:src="#d6d6d6"
+        app:civ_border_color="#FF000000"
+        app:civ_border_width="0dp"  />
+    <TextView
+        android:id="@+id/NameTextImage"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:gravity="center"
+        android:text=""
+        android:textColor="#ffffff"
+        android:textSize="15sp" />
+    </RelativeLayout>
+    <LinearLayout
+        android:id="@id/bubble"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_toEndOf="@id/rel"
+        android:layout_toRightOf="@id/rel"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <me.jagar.chatvoiceplayerlibrary.VoicePlayerView
+            android:id="@+id/voicePlayerView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:playPauseBackgroundColor="#4CAF50"
+            app:shareBackgroundColor="#F44336"
+            app:viewBackground="#EBEBEB"
+            app:showShareButton="true"
+            app:shareCornerRadius="100"
+            app:playPauseCornerRadius="100"
+            app:showTiming="true"
+            app:viewCornerRadius="100"
+            app:progressTimeColor="@color/pink"
+            app:seekBarThumbColor="#FFC107"
+            app:seekBarProgressColor="#000"
+
+            />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@id/bubble"
+        android:layout_alignRight="@id/bubble"
+        android:layout_below="@id/bubble"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:textColor="@color/gray_dark"
+        android:textSize="14sp"/>
+
+</RelativeLayout>

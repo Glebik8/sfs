@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+          package="com.blackfish.a1pedal">
+    <!--
+         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but you must specify either coarse or fine
+         location permissions for the 'MyLocation' functionality.
+    -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.STORAGE"/>
+
+    <application
+            android:name=".Onepedal"
+            android:allowBackup="true"
+            android:fullBackupContent="true"
+            android:hardwareAccelerated="false"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/app_name"
+            android:largeHeap="true"
+            android:networkSecurityConfig="@xml/network_security_config"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:supportsRtl="true"
+            android:theme="@style/AppTheme"
+            android:usesCleartextTraffic="true">
+        <activity android:name=".Calendar_block.CalendarActivity">
+        </activity>
+        <activity android:name=".InformationActivity">
+        </activity>
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
+        -->
+        <meta-data
+                android:name="com.google.android.geo.API_KEY"
+                android:value="@string/google_maps_key"/>
+
+        <activity android:name=".MapsActivity"/>
+        <activity android:name=".tools_class.SetMyLocation"/>
+        <activity
+                android:name=".Auth_Registr.RegistrActivity"
+                android:screenOrientation="portrait"/>
+        <activity
+                android:name=".Auth_Registr.LoginActivity"
+                android:screenOrientation="portrait">
+        </activity>
+        <activity
+                android:name=".FirstActivity"
+                android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+                android:name=".Parametr_v_Activity"
+                android:screenOrientation="portrait"/>
+        <activity
+                android:name=".Parametr_s_Activity"
+                android:screenOrientation="portrait"/>
+        <activity
+                android:name=".Auth_Registr.RememberPasswordActivity"
+                android:screenOrientation="portrait"/>
+        <activity
+                android:name=".tools_class.GalleryActivity"
+                android:screenOrientation="portrait"/>
+        <activity
+                android:name=".tools_class.RecorderActivity"
+                android:screenOrientation="portrait"/>
+        <activity
+                android:name=".ChatKit.media.CustomMediaMessagesActivity"
+                android:screenOrientation="portrait"/>
+        <activity
+                android:name=".AddSFriend"
+                android:screenOrientation="portrait"/>
+        <activity
+                android:name=".tools_class.videoplayer"
+                android:screenOrientation="portrait"/>
+        <activity
+                android:name=".RequestActivity"
+                android:screenOrientation="portrait"/>
+        <activity
+                android:name=".MainActivity"
+                android:screenOrientation="portrait"
+                android:windowSoftInputMode="adjustPan">
+        </activity>
+
+        <service
+                android:name=".PushFirebaseMessagingService"
+                android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+        <service
+                android:name=".tools_class.SocketEvent"
+                android:enabled="true"
+                android:exported="true">
+        </service>
+
+        <provider
+                android:name="androidx.core.content.FileProvider"
+                android:authorities="${applicationId}.provider"
+                android:exported="false"
+                android:grantUriPermissions="true">
+            <meta-data
+                    android:name="android.support.FILE_PROVIDER_PATHS"
+                    android:resource="@xml/provider_paths"/>
+        </provider>
+    </application>
+
+</manifest>
