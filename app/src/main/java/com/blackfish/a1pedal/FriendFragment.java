@@ -113,7 +113,6 @@ public class FriendFragment   extends Fragment implements DroidListener {
     }
 
     private void netIsOn(){
-
         ContNameText.setVisibility(View.VISIBLE);
         AddImage.setVisibility(View.VISIBLE);
         WaitInt.setVisibility(View.GONE);

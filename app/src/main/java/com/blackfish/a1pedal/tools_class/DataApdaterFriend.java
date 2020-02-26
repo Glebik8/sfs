@@ -124,18 +124,23 @@ public class DataApdaterFriend extends RecyclerView.Adapter<DataApdaterFriend.Vi
                 }
             } else  {
                 String name_im = friendList.getName();
+                if (name_im == null)
+                    name_im = friendList.getFio();
                 if (name_im.length() > 2) {
                     name_im = name_im.substring(0, 2);
                 }
                 holder.NameTextImage.setText(name_im);
                 holder.imageView.setImageResource(R.color.foobar);
             }
+            String name = friendList.getName();
+            if (name == null)
+                name = friendList.getFio();
             if (friendList.getType().equals("driver")) {
                 holder.nameView.setText(friendList.getModel());
-                holder.MessageTextView.setText(friendList.getName());
+                holder.MessageTextView.setText(name);
 
             } else {
-                holder.nameView.setText(friendList.getName());
+                holder.nameView.setText(name);
                 holder.MessageTextView.setText(friendList.getWork());
 
             }
@@ -145,7 +150,7 @@ public class DataApdaterFriend extends RecyclerView.Adapter<DataApdaterFriend.Vi
                 public void onClick(View view) {
 
                     Chats.getInstance().setChat_id("newDialog");
-                    String rep = String.valueOf(friendList.getPk());
+                    String rep = friendList.getPk();
                     if (friendList.getType().equals("driver")) {
                         Chats.getInstance().setTittle_mess(friendList.getModel() + " " + friendList.getName());
                     } else {
@@ -162,8 +167,6 @@ public class DataApdaterFriend extends RecyclerView.Adapter<DataApdaterFriend.Vi
 
     @Override
     public int getItemCount() {
-        if (friendLists == null)
-            return 0;
         return friendLists.size();
     }
 

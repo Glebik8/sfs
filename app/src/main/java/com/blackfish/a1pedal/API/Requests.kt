@@ -66,7 +66,7 @@ class Requests {
             }
         }
 
-        fun getEvents(id: String = "", callback: (List<Response>) -> Unit) {
+        fun getEvents(id: String = "", callback: (MutableList<Response>) -> Unit) {
             CoroutineScope(Dispatchers.Main).launch {
                 val response = api.getEvents(id)
                 callback(response)

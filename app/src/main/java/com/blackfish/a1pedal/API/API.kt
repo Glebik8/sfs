@@ -21,7 +21,7 @@ interface API {
     suspend fun getEvents(
             @Path("pk") id: String,
             @Header("Authorization") auth: String = "Token " + Profile_Info.getInstance().token
-    ): List<Response>
+    ): MutableList<Response>
 
 
     @GET("getuserinfo/{id}")

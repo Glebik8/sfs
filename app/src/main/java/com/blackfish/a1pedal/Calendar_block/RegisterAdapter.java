@@ -17,6 +17,7 @@ import com.blackfish.a1pedal.data.Response;
 
 import static com.blackfish.a1pedal.CalendarViewFragment.clickedDate;
 import static com.blackfish.a1pedal.tools_class.DataApdaterFriend.currentPosition;
+import static com.blackfish.a1pedal.CalendarViewFragment.friendsInfo;
 import static com.blackfish.a1pedal.tools_class.DataApdaterFriend.friendLists;
 import static com.blackfish.a1pedal.utils.CalendarDayKt.correctDate;
 
@@ -52,11 +53,16 @@ public class RegisterAdapter extends RecyclerView.Adapter<RegisterAdapter.Card> 
             array[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (clickedDate == null)
+                    if (clickedDate == null || currentPosition == -1)
                         return;
+                    String pk = "";
+                    if (friendLists != null)
+                        pk = friendLists.get(currentPosition).getPk();
+                    else
+                        pk = friendsInfo.get(currentPosition).getPk();
                     Requests.Companion.updateCalendar(
                             correctDate(clickedDate), time,
-                            friendLists.get(currentPosition).getPk(),  User.getInstance().getPk(), "new",
+                            pk,  User.getInstance().getPk(), "new",
                             (Response response) -> {
                                 Toast.makeText(context,
                                         "Заявка №" + (response.getPk()) + " подана",
