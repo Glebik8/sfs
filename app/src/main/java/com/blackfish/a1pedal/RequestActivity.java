@@ -13,6 +13,7 @@ import com.blackfish.a1pedal.Calendar_block.DataAdapterRequest;
 import com.blackfish.a1pedal.Calendar_block.RequesrList;
 import com.blackfish.a1pedal.ProfileInfo.Chats;
 import com.blackfish.a1pedal.ProfileInfo.Profile_Info;
+import com.blackfish.a1pedal.data.Response;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import org.json.JSONArray;
@@ -105,9 +106,9 @@ public class RequestActivity  extends AppCompatActivity {
 
     public void initRequest (JSONArray json){
         try {
-             List<RequesrList> WaitAppointLists     = new ArrayList<>();
-             List<RequesrList> OkAppointLists   = new ArrayList<>();
-             List<RequesrList> ArhivAppointLists    = new ArrayList<>();
+             List<Response> WaitAppointLists     = new ArrayList<>();
+             List<Response> OkAppointLists   = new ArrayList<>();
+             List<Response> ArhivAppointLists    = new ArrayList<>();
 
             for (int i=0 ; i<json.length() ; i ++)
             {
@@ -115,10 +116,10 @@ public class RequestActivity  extends AppCompatActivity {
                 String time = elem.getString("time");
                 String date = elem.getString("date");
                 String status = elem.getString("status");
-                if (status.equals("new"))
+               /* if (status.equals("new"))
                 {WaitAppointLists.add(new RequesrList(date,time,status));}
                 if (status.equals("accepted"))
-                {OkAppointLists.add(new RequesrList(date,time,status));}
+                {OkAppointLists.add(new RequesrList(date,time,status));}*/
             }
             DataAdapterRequest adapter = new DataAdapterRequest(this, WaitAppointLists);
             WaitAppointListView.setLayoutManager(new LinearLayoutManager(this));

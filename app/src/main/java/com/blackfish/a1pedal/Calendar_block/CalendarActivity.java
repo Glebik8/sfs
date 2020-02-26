@@ -2,6 +2,7 @@ package com.blackfish.a1pedal.Calendar_block;
 
 
 import android.os.Bundle;
+import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,7 +20,7 @@ public class CalendarActivity extends AppCompatActivity {
         setContentView(R.layout.activity_calendar);
         getSupportFragmentManager().beginTransaction().add(R.id.check, CalendarViewFragment.newInstance()).commit();
         recyclerView = findViewById(R.id.regRecycler);
-        recyclerView.setAdapter(new RegisterAdapter());
+        recyclerView.setAdapter(new RegisterAdapter(getApplicationContext()));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 }

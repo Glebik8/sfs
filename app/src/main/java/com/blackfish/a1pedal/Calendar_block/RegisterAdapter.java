@@ -1,20 +1,34 @@
 package com.blackfish.a1pedal.Calendar_block;
 
+import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import com.blackfish.a1pedal.API.Requests;
+import com.blackfish.a1pedal.ProfileInfo.Profile_Info;
+import com.blackfish.a1pedal.ProfileInfo.User;
 import com.blackfish.a1pedal.R;
+import com.blackfish.a1pedal.data.Response;
+
+import static com.blackfish.a1pedal.CalendarViewFragment.clickedDate;
+import static com.blackfish.a1pedal.tools_class.DataApdaterFriend.currentPosition;
+import static com.blackfish.a1pedal.tools_class.DataApdaterFriend.friendLists;
+import static com.blackfish.a1pedal.utils.CalendarDayKt.correctDate;
 
 public class RegisterAdapter extends RecyclerView.Adapter<RegisterAdapter.Card> {
 
     int hours = 8;
     int minutes = 0;
+    Context context;
     boolean[] ready = new boolean[8];
 
-    public RegisterAdapter() {
+    public RegisterAdapter(Context context) {
+        this.context = context;
         for (int i = 0; i < 8; i++) {
             ready[i] = false;
         }
@@ -33,16 +47,27 @@ public class RegisterAdapter extends RecyclerView.Adapter<RegisterAdapter.Card> 
         for (int i = 0; i < array.length; i++) {
             if (ready[position])
                 continue;
-            array[i].setText(hours + ":" + f(minutes));
-            minutes += 15;
-            hours += minutes / 60;
-            minutes %= 60;
+            String time = hours + ":" + f(minutes);
+            array[i].setText(time);
             array[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    if (clickedDate == null)
+                        return;
+                    Requests.Companion.updateCalendar(
+                            correctDate(clickedDate), time,
+                            friendLists.get(currentPosition).getPk(),  User.getInstance().getPk(), "new",
+                            (Response response) -> {
+                                Toast.makeText(context,
+                                        "Заявка №" + (response.getPk()) + " подана",
+                                        Toast.LENGTH_LONG).show();
+                                return null;
+                            });
                 }
             });
+            minutes += 15;
+            hours += minutes / 60;
+            minutes %= 60;
         }
         ready[position] = true;
     }

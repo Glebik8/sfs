@@ -9,15 +9,16 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.blackfish.a1pedal.R;
+import com.blackfish.a1pedal.data.Response;
 
 import java.util.List;
 
 public class DataAdapterRequest extends RecyclerView.Adapter<DataAdapterRequest.ViewHolder> {
     private Context activity;
     private LayoutInflater inflater;
-    private List<RequesrList> requesrLists;
+    private List<Response> requesrLists;
 
-    public DataAdapterRequest(Context context, List<RequesrList> recLists) {
+    public DataAdapterRequest(Context context, List<Response> recLists) {
         activity=context;
         this.requesrLists = recLists;
         this.inflater = LayoutInflater.from(context);
@@ -33,7 +34,7 @@ public class DataAdapterRequest extends RecyclerView.Adapter<DataAdapterRequest.
 
     @Override
     public void onBindViewHolder(DataAdapterRequest.ViewHolder holder, int position) {
-        RequesrList recomendList = requesrLists.get(position);
+        Response recomendList = requesrLists.get(position);
 
         holder.TextBodyView.setText("Запись на "+recomendList.getDate() + ", в " + recomendList.getTime());
 

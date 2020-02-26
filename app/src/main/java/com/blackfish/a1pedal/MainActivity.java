@@ -8,6 +8,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 
+
+import com.blackfish.a1pedal.API.Requests;
 import com.blackfish.a1pedal.ChatKit.media.CustomMediaMessagesActivity;
 import com.blackfish.a1pedal.ChatKit.media.DefaultDialogsActivity;
 import com.blackfish.a1pedal.ProfileInfo.Chats;
@@ -48,6 +50,8 @@ import java.util.Objects;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+
+import static com.blackfish.a1pedal.tools_class.DataApdaterFriend.currentPosition;
 
 public class MainActivity extends AppCompatActivity implements DroidListener {
     public final static String BROADCAST_ACTION ="com.blackfish.a1pedal.ChatKit.media";
@@ -91,8 +95,7 @@ String type , token, fcmToken ;
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
         token= Profile_Info.getInstance().getToken();
         type = User.getInstance().getType();
-       Chats.getInstance().setExit("false");
-
+        Chats.getInstance().setExit("false");
         Intent intent = getIntent();
 
         if (type.equals("driver")) {

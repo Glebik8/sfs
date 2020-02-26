@@ -34,7 +34,7 @@ TextView CompTextView , BackText;
         NumberTextView = findViewById(R.id.NumberTextView);
         CompTextView = findViewById(R.id.CompTextView);
         BackText = findViewById(R.id.BackText);
-
+        Log.d("glebik", Profile_Info.getInstance().getToken());
 
         CompTextView.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -46,8 +46,7 @@ TextView CompTextView , BackText;
 
                         try {
                             data = new JSONObject();
-                            Log.d("glebik", NumberTextView.getText().toString());
-                            data.put("type", "add");
+                            data.put("type", "request");
                             data.put("phone", NumberTextView.getText().toString());
 
                         } catch (JSONException e) {

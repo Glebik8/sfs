@@ -46,10 +46,9 @@
     android:layout_below="@id/calendarView"
     />
         <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/RequestRecyclerView"
-            />
+                android:layout_width="match_parent"
+                android:layout_height="200sp"
+                android:id="@+id/events" />
 </LinearLayout>
 
 </RelativeLayout>

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +17,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blackfish.a1pedal.API.Requests;
 import com.blackfish.a1pedal.ChatKit.media.DefaultDialogsActivity;
 import com.blackfish.a1pedal.ProfileInfo.FriendList;
 import com.blackfish.a1pedal.ProfileInfo.Profile_Info;
 import com.blackfish.a1pedal.ProfileInfo.User;
+import com.blackfish.a1pedal.data.FriendsInfo;
+import com.blackfish.a1pedal.data.Info;
 import com.blackfish.a1pedal.tools_class.DataApdaterFriend;
 import com.droidnet.DroidListener;
 import com.droidnet.DroidNet;
@@ -39,7 +44,7 @@ import java.util.List;
 
 public class FriendFragment   extends Fragment implements DroidListener {
 
-    public static List<FriendList> friendLists = new ArrayList<>();
+    private FriendsInfo friendLists;
     public FriendFragment() {
     }
 
@@ -112,8 +117,15 @@ public class FriendFragment   extends Fragment implements DroidListener {
         ContNameText.setVisibility(View.VISIBLE);
         AddImage.setVisibility(View.VISIBLE);
         WaitInt.setVisibility(View.GONE);
-        GetContacts mt = new GetContacts();
-        mt.execute();
+        Requests.Companion.getFriends(
+                (FriendsInfo response) -> {
+                    Log.d("glebik", "Ok");
+                    DataApdaterFriend apdaterFriend = new DataApdaterFriend(getContext(), response);
+                    recyclerView.setAdapter(apdaterFriend);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                    return null;
+                }
+        );
 
     }
     private void netIsOff(){
@@ -130,87 +142,5 @@ public class FriendFragment   extends Fragment implements DroidListener {
 
 
 
-    class GetContacts extends AsyncTask<Void, Void, String> {
 
-        HttpURLConnection urlConnection = null;
-        BufferedReader reader = null;
-        String resultJson = "";
-        String   token= Profile_Info.getInstance().getToken();
-        @Override
-        protected String doInBackground(Void... params) {
-            URL url = null;
-            try {
-                url = new URL("http://185.213.209.188/api/friend/");
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-
-
-            try {
-                urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestProperty ("Authorization", "Token "+ token );
-                urlConnection.setRequestMethod("GET");
-                urlConnection.connect();
-
-                InputStream inputStream = urlConnection.getInputStream();
-                StringBuffer buffer = new StringBuffer();
-
-                reader = new BufferedReader(new InputStreamReader(inputStream));
-
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    buffer.append(line);
-                }
-
-                resultJson = buffer.toString();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return resultJson;
-        }
-        @Override
-        protected void onPostExecute(String response) {
-            friendLists.clear();
-            super.onPostExecute(response);
-            String Rules="";
-            try {
-
-                JSONObject r = new JSONObject(response);
-                JSONArray kol = r.getJSONObject("friends").getJSONArray("user_friends");
-
-                for (int i = 0; i<kol.length() ; i++) {
-                    JSONObject elem = kol.getJSONObject(i);
-                    String name, model="";
-                    String photo;
-                    String pk = elem.getString("pk");
-                    String type = elem.getString("type");
-                    String last_activity = elem.getString("last_activity");
-                    String work = "";
-                    if (type.equals("service")) {
-                        work = elem.getString("work");
-                        name = elem.getString("name");
-
-                    } else {
-                        name = elem.getString("fio");
-                        model = elem.getString("brand") + " " + elem.getString("model");
-                    }
-                    photo = elem.getString("photo");
-                    if (!photo.equals("") && !photo.equals("1")) {
-                        photo = "http://185.213.209.188" + photo;
-                    } else {photo="";}
-              FriendList f = new FriendList(name, photo , model, pk , work , type,last_activity );
-            friendLists.add(f);
-                }
-                Context ct = getContext();
-                if (ct!=null)
-                { DataApdaterFriend adapter = new DataApdaterFriend(ct, friendLists);
-                recyclerView.setLayoutManager(new LinearLayoutManager(ct));
-                recyclerView.setAdapter(adapter);}
-            }catch (JSONException ignored){
-                String f = ignored.toString();
-
-            }
-        }
-    }
 }

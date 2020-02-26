@@ -1,70 +1,84 @@
 package com.blackfish.a1pedal.API
 
-import android.util.Log
+import com.blackfish.a1pedal.ProfileInfo.Profile_Info
+import com.blackfish.a1pedal.ProfileInfo.User
+import com.blackfish.a1pedal.data.*
 import com.blackfish.a1pedal.tools_class.PostRes
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
+import com.google.gson.annotations.SerializedName
+import kotlinx.coroutines.*
 import okhttp3.OkHttpClient
-import okhttp3.Request
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.*
 
-fun performRequestByNumber(phone: String, type: String, callback: (String) -> Unit) {
-    CoroutineScope(Dispatchers.Default).async {
-        val postRes = PostRes()
-        val response = postRes.post(
-                "http://185.213.209.188/api/friend/"
-                , "{\n" +
-                "  \"type\" : \"$type\",\n" +
-                "  \"phone\" : \"$phone\"\n" +
-                "}"
-                , "Token 5bbc50db3f6f254f8cc23a68437f2062c7e4e9e8"
-        )
-        callback(response)
-    }
-}
+class Requests {
 
-fun performRequest(id: String, type: String, callback: (String) -> Unit) {
-    CoroutineScope(Dispatchers.Default).async {
-        return@async getNumberById(id) {
-            performRequestByNumber(it, type, callback)
+    companion object {
+
+        private val logging = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+        private val httpClient = OkHttpClient.Builder().apply {
+            addInterceptor(logging)
+        }
+
+        val retrofit: Retrofit = Retrofit.Builder()
+                .baseUrl("http://185.213.209.188/api/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(httpClient.build())
+                .build()
+        val api: API = retrofit.create(API::class.java)
+
+        fun getInfo(id: String, callback: (UserInfo) -> Unit) {
+            CoroutineScope(Dispatchers.Default).launch {
+                val response = api.getInfoById(id)
+                callback(response)
+            }
+        }
+
+        fun getFriends(callback: (FriendsInfo) -> Unit) {
+            CoroutineScope(Dispatchers.Main).launch {
+                val response = api.getFriends()
+                callback(response)
+            }
+        }
+
+        fun performRequestByNumber(phone: String, type: String, callback: (UpdateInfo) -> Unit) {
+            CoroutineScope(Dispatchers.Main).launch {
+                val response = api.performRequest(UpdateRequest(type, phone))
+                callback(response)
+            }
+        }
+
+        fun getNumberById(id: String, callback: (String) -> Unit) {
+            CoroutineScope(Dispatchers.Main).launch {
+                val response = api.getInfoById(id)
+                val number = response.phone
+                callback(number)
+            }
+        }
+
+        fun updateCalendar(date: String, time: String, serviceId: String, driverId: String, status: String, callback: (Response) -> Unit) {
+            CoroutineScope(Dispatchers.Main).launch {
+                val response = api.updateCalendar(Request(time, date, serviceId, driverId, status))
+                callback(response)
+            }
+        }
+
+        fun getEvents(id: String = "", callback: (List<Response>) -> Unit) {
+            CoroutineScope(Dispatchers.Main).launch {
+                val response = api.getEvents(id)
+                callback(response)
+            }
+        }
+
+        fun updateEvent(eventId: Int, status: String, callback: (Response) -> Unit) {
+            CoroutineScope(Dispatchers.Main).launch {
+                val response = api.updateEventsStatus(EventUpdate(eventId, status))
+                callback(response)
+            }
         }
     }
+
 }
-
-
-fun getNumberById(id: String, callback: (String) -> Unit) {
-    CoroutineScope(Dispatchers.Default).async {
-        val client = OkHttpClient()
-        val request = Request.Builder()
-                .url("http://185.213.209.188/api/getuserinfo/$id")
-                .addHeader("Authorization", "Token 5bbc50db3f6f254f8cc23a68437f2062c7e4e9e8")
-                .get()
-                .build()
-        val number = client.newCall(request).execute().body()!!.string()
-                .split(',').filter { it.split(":").contains("\"phone\"") }
-                .first()
-                .split(':')
-                .last()
-                .drop(1)
-                .dropLast(1)
-        callback(number)
-    }
-}
-
-fun updateCalendar(date: String, time: String, serviceId: String, driverId: String) {
-    CoroutineScope(Dispatchers.Main).async {
-        val postRes = PostRes()
-        val response = postRes.post(
-                "http://185.213.209.188/api/createcalendarevent/"
-                , "{\n" +
-                "\"time\":\"$time\"\n" +
-                "\"date\":\"$date\"\n" +
-                "\"service_id\":$serviceId\n" +
-                "\"driver_id\":$driverId\n" +
-                "\"status\":\"new\"\n" +
-                "} "
-                , "Token 3f2907c63373f2e0b75cfbcc8fbda2ee7863c8f1"
-        )
-    }
-}
-

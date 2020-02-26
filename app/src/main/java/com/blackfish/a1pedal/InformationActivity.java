@@ -2,41 +2,23 @@ package com.blackfish.a1pedal;
 
 import android.content.Context;
 import android.content.Intent;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
-import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.Toolbar;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import com.blackfish.a1pedal.API.API;
-import com.blackfish.a1pedal.API.Request;
-import com.blackfish.a1pedal.API.RequestsKt;
+import com.blackfish.a1pedal.API.Requests;
 import com.blackfish.a1pedal.Calendar_block.CalendarActivity;
 import com.blackfish.a1pedal.ProfileInfo.Chats;
-import com.blackfish.a1pedal.tools_class.PostRes;
+import com.blackfish.a1pedal.ProfileInfo.Profile_Info;
 import com.bumptech.glide.Glide;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.internal.GsonBuildConfig;
 import com.squareup.picasso.Picasso;
-import okhttp3.Credentials;
-import okhttp3.OkHttpClient;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.io.File;
-import java.io.IOException;
 
 import static com.blackfish.a1pedal.tools_class.DataApdaterFriend.currentPosition;
-import static com.blackfish.a1pedal.FriendFragment.friendLists;
+import static com.blackfish.a1pedal.tools_class.DataApdaterFriend.friendLists;
 
 public class InformationActivity extends AppCompatActivity {
 
@@ -66,24 +48,19 @@ public class InformationActivity extends AppCompatActivity {
         imageView = findViewById(R.id.friendImage);
         friendType = findViewById(R.id.textView);
         friendName.setText(friendLists.get(currentPosition).getName());
-        friendNumber.setText(friendLists.get(currentPosition).getPhone());
+        friendNumber.setText(friendLists.get(currentPosition).phone);
         String text = friendLists.get(currentPosition).getWork();
-        String[] st = friendLists.get(currentPosition).getImage().split("/");
+        String[] st = friendLists.get(currentPosition).getPhoto().split("/");
         String AvatName = st[st.length - 1];
         File path = Chats.getInstance().getPath();
         File path1 = new File(path + AvatName);
         friendType.setText(text);
-        RequestsKt.getNumberById(
-                friendLists.get(currentPosition).getid(), (String response) -> {
-                    friendNumber.setText(response);
-                    return null;
-                }
-        );
+        friendNumber.setText(friendLists.get(currentPosition).phone);
         if (path1.exists()) {
             Glide.with(getApplicationContext()).load(path1).into(imageView);
         } else {
             try {
-                Picasso.get().load(friendLists.get(currentPosition).getImage()).into(imageView);
+                Picasso.get().load(friendLists.get(currentPosition).getPhoto()).into(imageView);
             } catch (IllegalArgumentException e) {
                 // TODO
             }
@@ -91,27 +68,19 @@ public class InformationActivity extends AppCompatActivity {
         friendRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String number = friendLists.get(currentPosition).getid();
+                String number = friendLists.get(currentPosition).getPk();
                 if (number == null || number.equals("")) {
                     return;
                 }
-                RequestsKt.performRequest(number, "delete", (String response) -> {
-                    Log.d("glebik", response);
-                    return null;
-                });
             }
         });
         friendBlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String number = friendLists.get(currentPosition).getid();
+                String number = friendLists.get(currentPosition).getPk();
                 if (number == null || number.equals("")) {
                     return;
                 }
-                RequestsKt.performRequest(number, "block", (String response) -> {
-                    Log.d("glebik", response);
-                    return null;
-                });
             }
         });
         friendPush.setOnClickListener(new View.OnClickListener() {

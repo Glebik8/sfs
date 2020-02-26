@@ -6,9 +6,11 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.JsonReader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,9 +19,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blackfish.a1pedal.API.Requests;
 import com.blackfish.a1pedal.Calendar_block.DataAdapterRequest;
+import com.blackfish.a1pedal.Calendar_block.EventsAdapter;
 import com.blackfish.a1pedal.Calendar_block.RequesrList;
 import com.blackfish.a1pedal.ProfileInfo.Profile_Info;
+import com.blackfish.a1pedal.ProfileInfo.User;
+import com.blackfish.a1pedal.data.Response;
 import com.blackfish.a1pedal.decorators.EventDecorator;
 import com.blackfish.a1pedal.decorators.EventDecoratorNumb;
 import com.blackfish.a1pedal.tools_class.BadgeCalendarDay;
@@ -49,12 +55,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
+
+import com.blackfish.a1pedal.API.Requests.*;
 
 
 @TargetApi(Build.VERSION_CODES.O)
 public class CalendarViewFragment  extends Fragment implements OnDateLongClickListener , OnDateSelectedListener {
     TextView NowDataView;
-    RecyclerView RequestRecyclerView ;
+    RecyclerView requestRecyclerView ;
+    List<Response> events;
+    public static CalendarDay clickedDate;
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("EEE, d MMM yyyy");
     MaterialCalendarView widget;
     public CalendarViewFragment() {
@@ -69,7 +80,7 @@ public class CalendarViewFragment  extends Fragment implements OnDateLongClickLi
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.calendar_fram, container, false);
         NowDataView = view.findViewById(R.id.NowDataView);
-        RequestRecyclerView = view.findViewById(R.id.RequestRecyclerView);
+        requestRecyclerView = view.findViewById(R.id.events);
         widget  = view.findViewById(R.id.calendarView);
         widget.setShowOtherDates(MaterialCalendarView.SHOW_ALL);
         widget.setTopbarVisible(false);
@@ -82,8 +93,19 @@ public class CalendarViewFragment  extends Fragment implements OnDateLongClickLi
 
         widget.setOnDateLongClickListener(this);
         widget.setOnDateChangedListener(this);
-        GetCalendarEvents mt = new GetCalendarEvents();
-        mt.execute();
+
+        Requests.Companion.getEvents("",
+                (List<Response> response) ->
+                {
+                    Log.d("glebik", response.toString());
+                    events = response.stream().filter(it -> !it.getStatus().equals("rejected")).collect(Collectors.toList());
+                    EventsAdapter adapter = new EventsAdapter(events);
+                    requestRecyclerView.setAdapter(adapter);
+                    requestRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                    return null;
+                });
+        //GetCalendarEvents mt = new GetCalendarEvents();
+        //mt.execute();
         return view;
 
     }
@@ -98,6 +120,7 @@ public class CalendarViewFragment  extends Fragment implements OnDateLongClickLi
 
     @Override
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+        clickedDate = date;
         NowDataView.setText(FORMATTER.format(date.getDate()));
     }
 
@@ -164,9 +187,7 @@ public class CalendarViewFragment  extends Fragment implements OnDateLongClickLi
                 if (status.equals("accepted"))
                 {AppointLists.add(new RequesrList(date,time,status));}
             }
-            DataAdapterRequest adapter = new DataAdapterRequest(getContext(), AppointLists);
-            RequestRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-            RequestRecyclerView.setAdapter( adapter);
+
 
         }catch (JSONException ignored){
         }}
