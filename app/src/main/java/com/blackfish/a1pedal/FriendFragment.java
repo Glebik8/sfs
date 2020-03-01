@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,8 +23,10 @@ import com.blackfish.a1pedal.ChatKit.media.DefaultDialogsActivity;
 import com.blackfish.a1pedal.ProfileInfo.FriendList;
 import com.blackfish.a1pedal.ProfileInfo.Profile_Info;
 import com.blackfish.a1pedal.ProfileInfo.User;
+import com.blackfish.a1pedal.data.FriendRequest;
 import com.blackfish.a1pedal.data.FriendsInfo;
 import com.blackfish.a1pedal.data.Info;
+import com.blackfish.a1pedal.data.Request;
 import com.blackfish.a1pedal.tools_class.DataApdaterFriend;
 import com.droidnet.DroidListener;
 import com.droidnet.DroidNet;
@@ -118,8 +121,17 @@ public class FriendFragment   extends Fragment implements DroidListener {
         WaitInt.setVisibility(View.GONE);
         Requests.Companion.getFriends(
                 (FriendsInfo response) -> {
-                    Log.d("glebik", "Ok");
+                    Log.d("glebik", response.toString());
+                    response.filter((FriendRequest request) -> {
+                        if (User.getInstance().getType().equals("driver"))
+                            return request.getRecipient();
+                        return request.getSender();
+                    });
                     DataApdaterFriend apdaterFriend = new DataApdaterFriend(getContext(), response);
+                    recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
+                            DividerItemDecoration.HORIZONTAL));
+                    recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
+                            DividerItemDecoration.VERTICAL));
                     recyclerView.setAdapter(apdaterFriend);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                     return null;

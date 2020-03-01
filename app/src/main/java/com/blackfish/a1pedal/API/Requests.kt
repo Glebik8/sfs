@@ -16,6 +16,8 @@ class Requests {
 
     companion object {
 
+        var isRunning = false
+
         private val logging = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
@@ -29,6 +31,15 @@ class Requests {
                 .client(httpClient.build())
                 .build()
         val api: API = retrofit.create(API::class.java)
+
+        fun start() {
+            if (isRunning) {
+                return
+            }
+            GlobalScope.launch {
+
+            }
+        }
 
         fun getInfo(id: String, callback: (UserInfo) -> Unit) {
             CoroutineScope(Dispatchers.Default).launch {

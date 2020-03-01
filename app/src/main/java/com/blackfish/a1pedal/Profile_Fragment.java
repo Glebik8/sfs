@@ -116,7 +116,6 @@ public class Profile_Fragment  extends Fragment {
             ParamTextView.setText(User.getInstance().getName());
 
         }
-String ph = User.getInstance().getPhoto();
         if (User.getInstance().getPhoto().equals("") )
         {
             if (User.getInstance().getType().equals("driver")){
@@ -145,8 +144,7 @@ String ph = User.getInstance().getPhoto();
             File path1 = new File(path+AvatName);
             if (!path1.exists()){
                 try {
-                    downloadFileAsync("http://185.213.209.188"+User.getInstance().getPhoto(),"avatar");
-                    Picasso.get().load("http://185.213.209.188"+User.getInstance().getPhoto()).resize(200, 200)
+                    Picasso.get().load("http://185.213.209.188" + User.getInstance().getPhoto()).resize(200, 200)
                             .transform(new CropCircleTransformation()).noFade().into(profile_image);
                 } catch (Exception e) {
                     e.printStackTrace();

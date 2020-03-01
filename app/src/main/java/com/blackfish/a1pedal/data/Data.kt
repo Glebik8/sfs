@@ -114,13 +114,13 @@ data class FriendsInfo(
         @JvmField
         val friends: Friends?,
         @JvmField
-        val requests: MutableList<FriendRequest>?
+        var requests: MutableList<FriendRequest>?
 ) {
         operator fun get(position: Int): Info? {
                 if (position < friends?.userFriends?.size ?: 0) {
                         return friends!!.userFriends[position]
                 }
-                return requests?.get(position - (friends?.userFriends?.size ?: 0))?.sender
+                return requests?.get(position - (friends?.userFriends?.size ?: 0))?.recipient
         }
 
         fun isRequest(position: Int) = position < friends?.userFriends?.size ?: 0
@@ -137,8 +137,14 @@ data class FriendsInfo(
 
         fun makeFriend(position: Int) {
                 val copy = requests!![position - (friends?.userFriends?.size ?: 0)]
-                requests.removeAt(position - (friends?.userFriends?.size ?: 0))
-                friends!!.userFriends.add(copy.sender)
+                requests!!.removeAt(position - (friends?.userFriends?.size ?: 0))
+                friends!!.userFriends.add(copy.recipient)
+        }
+
+        fun filter(check: (FriendRequest) -> Info) {
+                requests =
+                        requests?.filter { value -> !((friends?.userFriends?.contains(check(value))) ?: false) }?.toMutableList()
+
         }
 }
 

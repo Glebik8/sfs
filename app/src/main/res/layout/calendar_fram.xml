@@ -35,8 +35,7 @@
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:mcv_tileHeight="45dp"
-        />
+        app:mcv_tileHeight="45dp" />
     <TextView
     android:id="@+id/NowDataView"
         android:text="Дата"

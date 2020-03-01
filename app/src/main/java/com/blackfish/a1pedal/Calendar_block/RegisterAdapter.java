@@ -1,7 +1,6 @@
 package com.blackfish.a1pedal.Calendar_block;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,14 +9,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.blackfish.a1pedal.API.Requests;
-import com.blackfish.a1pedal.ProfileInfo.Profile_Info;
 import com.blackfish.a1pedal.ProfileInfo.User;
 import com.blackfish.a1pedal.R;
 import com.blackfish.a1pedal.data.Response;
 
-import static com.blackfish.a1pedal.CalendarViewFragment.clickedDate;
-import static com.blackfish.a1pedal.tools_class.DataApdaterFriend.currentPosition;
 import static com.blackfish.a1pedal.CalendarViewFragment.friendsInfo;
+import static com.blackfish.a1pedal.Calendar_block.CalendarActivity.clickedDate;
+import static com.blackfish.a1pedal.tools_class.DataApdaterFriend.currentPosition;
 import static com.blackfish.a1pedal.tools_class.DataApdaterFriend.friendLists;
 import static com.blackfish.a1pedal.utils.CalendarDayKt.correctDate;
 

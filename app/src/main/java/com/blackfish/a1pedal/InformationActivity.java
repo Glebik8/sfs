@@ -47,7 +47,10 @@ public class InformationActivity extends AppCompatActivity {
         friendBlock = findViewById(R.id.friendBlock);
         imageView = findViewById(R.id.friendImage);
         friendType = findViewById(R.id.textView);
-        friendName.setText(friendLists.get(currentPosition).getName());
+        String name = friendLists.get(currentPosition).getName();
+        if (name == null)
+            name = friendLists.get(currentPosition).getFio();
+        friendName.setText(name);
         friendNumber.setText(friendLists.get(currentPosition).phone);
         String text = friendLists.get(currentPosition).getWork();
         String[] st = friendLists.get(currentPosition).getPhoto().split("/");
@@ -60,7 +63,7 @@ public class InformationActivity extends AppCompatActivity {
             Glide.with(getApplicationContext()).load(path1).into(imageView);
         } else {
             try {
-                Picasso.get().load(friendLists.get(currentPosition).getPhoto()).into(imageView);
+                Picasso.get().load("http://185.213.209.188" + friendLists.get(currentPosition).getPhoto()).into(imageView);
             } catch (IllegalArgumentException e) {
                 // TODO
             }
