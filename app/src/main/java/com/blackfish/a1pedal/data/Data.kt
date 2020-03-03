@@ -146,5 +146,7 @@ data class FriendsInfo(
                         requests?.filter { value -> !((friends?.userFriends?.contains(check(value))) ?: false) }?.toMutableList()
 
         }
+
+        fun indexOf(id: String) = (friends?.userFriends?.indexOfFirst { it.pk == id } ?: -1)
 }
 

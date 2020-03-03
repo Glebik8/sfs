@@ -55,7 +55,7 @@ public class FriendFragment   extends Fragment implements DroidListener {
         return new FriendFragment();
     }
     private DroidNet mDroidNet;
-
+    public static DataApdaterFriend apdaterFriend;
     RecyclerView recyclerView;
     TextView ContNameText;
     ImageView AddImage;
@@ -127,7 +127,7 @@ public class FriendFragment   extends Fragment implements DroidListener {
                             return request.getRecipient();
                         return request.getSender();
                     });
-                    DataApdaterFriend apdaterFriend = new DataApdaterFriend(getContext(), response);
+                    apdaterFriend = new DataApdaterFriend(getContext(), response);
                     recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
                             DividerItemDecoration.HORIZONTAL));
                     recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),

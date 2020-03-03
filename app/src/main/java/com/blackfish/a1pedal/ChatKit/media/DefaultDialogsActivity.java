@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +52,9 @@ import java.util.List;
 import java.util.Objects;
 
 
+import static com.blackfish.a1pedal.tools_class.DataApdaterFriend.currentPosition;
+import static com.blackfish.a1pedal.tools_class.DataApdaterFriend.friendLists;
+
 public class DefaultDialogsActivity extends DemoDialogsActivity implements DroidListener {
 
     private DroidNet mDroidNet;
@@ -63,6 +67,7 @@ ImageView AddImage;
     TextView ContNameText;
     LinearLayout WaitInt;
     Context ct;
+    int lastChat = -1;
     public static void open(Context context) {
        // context.startActivity(new Intent(context, DefaultDialogsActivity.class));
     }
@@ -139,6 +144,8 @@ ImageView AddImage;
            Chats.getInstance().setRecipient_id(rep);
            Chats.getInstance().setLastActivity(us.getLastActivity());
            Chats.getInstance().setTittle_mess(us.getName());
+           //lastChat = Chats.getInstance().getChat_id();
+            Log.d("glebik", Chats.getInstance().getChat_id());
            ArrayList<Chats.UnreadChats> uc = Chats.getInstance().getUnread_chats_count();
            ArrayList<Chats.UnreadChats> uc3 = new ArrayList<>();
            if (uc!=null) {

@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blackfish.a1pedal.API.Notification;
 import com.blackfish.a1pedal.API.Requests;
 import com.blackfish.a1pedal.Calendar_block.DataAdapterRequest;
 import com.blackfish.a1pedal.Calendar_block.EventsAdapter;
@@ -71,6 +72,7 @@ public class CalendarViewFragment extends Fragment implements OnDateLongClickLis
     TextView NowDataView, contNameText;
     RecyclerView requestRecyclerView;
     List<Response> events;
+    int lastK = 0;
     ArrayList<Response> notAccepted = new ArrayList<>();
     public static FriendsInfo friendsInfo;
     public static ArrayList<CalendarDay> accepted = new ArrayList<>();
@@ -104,20 +106,14 @@ public class CalendarViewFragment extends Fragment implements OnDateLongClickLis
             return null;
         });
         widget.setTopbarVisible(false);
-        contNameText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View view) {
-                widget.clearSelection();
-                Requests.Companion.getEvents("", (List<Response> response) -> {
-                    updateEvents();
-                    return null;
-                });
-
-            }
+        Requests.Companion.start((List<Response> response) -> {
+            Log.d("glebik", "ok");
+            updateEvents(response);
+            return null;
         });
+        contNameText.setOnClickListener(view1 -> widget.clearSelection());
         widget.setOnDateLongClickListener(this);
         widget.setOnDateChangedListener(this);
-
         Requests.Companion.getEvents("",
                 (List<Response> response) ->
                 {
@@ -138,9 +134,9 @@ public class CalendarViewFragment extends Fragment implements OnDateLongClickLis
                             rejected.add(CalendarDay.from(year, month, day));
                         }
                     }
-                    widget.removeDecorators();
-                    widget.addDecorator(new EventDecorator(Color.GREEN, accepted));
-                    widget.addDecorator(new EventDecorator(Color.RED, rejected));
+                    //widget.removeDecorators();
+                    //widget.addDecorator(new EventDecorator(Color.GREEN, accepted));
+                    //widget.addDecorator(new EventDecorator(Color.RED, rejected));
                     notAccepted.clear();
                     for (int i = 0; i < events.size(); i++) {
                         if (User.getInstance().getType().equals("driver")) {
@@ -157,11 +153,11 @@ public class CalendarViewFragment extends Fragment implements OnDateLongClickLis
                         }
                     }
                     eventsAdapter = new EventsAdapter(startContext, notAccepted);
-                    requestRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                    requestRecyclerView.setLayoutManager(new LinearLayoutManager(startContext));
                     requestRecyclerView.setHasFixedSize(true);
-                    requestRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
+                    requestRecyclerView.addItemDecoration(new DividerItemDecoration(startContext,
                             DividerItemDecoration.HORIZONTAL));
-                    requestRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
+                    requestRecyclerView.addItemDecoration(new DividerItemDecoration(startContext,
                             DividerItemDecoration.VERTICAL));
                     requestRecyclerView.setAdapter(eventsAdapter);
                     return null;
@@ -173,32 +169,46 @@ public class CalendarViewFragment extends Fragment implements OnDateLongClickLis
 
     }
 
-    public void updateEvents() {
-        Requests.Companion.getEvents("", (List<Response> response) -> {
-            events = response;
-            for (int i = 0; i < events.size(); i++) {
-                if (events.get(i).getStatus().equals("accepted")) {
-                    String[] temp = events.get(i).getDate().split("/");
-                    int year = Integer.parseInt(temp[2]);
-                    int month = Integer.parseInt(temp[1]);
-                    int day = Integer.parseInt(temp[0]);
-                    accepted.add(CalendarDay.from(year, month, day));
-                }
-                if (events.get(i).getStatus().equals("new")) {
-                    String[] temp = events.get(i).getDate().split("/");
-                    int year = Integer.parseInt(temp[2]);
-                    int month = Integer.parseInt(temp[1]);
-                    int day = Integer.parseInt(temp[0]);
-                    rejected.add(CalendarDay.from(year, month, day));
-                }
+    public void handleDifference(List<Response> newData) {
+        int k = 0;
+        for (int i = 0; i < newData.size(); i++) {
+            if (!events.contains(newData.get(i))) {
+                k++;
             }
-            widget.removeDecorators();
-            widget.addDecorator(new EventDecorator(Color.GREEN, accepted));
-            widget.addDecorator(new EventDecorator(Color.RED, rejected));
-            eventsAdapter.setEvents(response.stream().filter(it -> !it.getStatus().equals("delete")).collect(Collectors.toList()));
-            eventsAdapter.notifyDataSetChanged();
-            return null;
-        });
+        }
+        if (lastK != 0) {
+            Notification.INSTANCE.makeNotification(k - lastK, startContext);
+        }
+        lastK = k;
+    }
+
+    public void updateEvents(List<Response> response) {
+        accepted.clear();
+        rejected.clear();
+        //handleDifference(response);
+        events = response;
+        for (int i = 0; i < events.size(); i++) {
+            if (events.get(i).getStatus().equals("new")
+                    || (User.getInstance().getType().equals("driver") && events.get(i).getStatus().equals("rejected"))) {
+                String[] temp = events.get(i).getDate().split("/");
+                int year = Integer.parseInt(temp[2]);
+                int month = Integer.parseInt(temp[1]);
+                int day = Integer.parseInt(temp[0]);
+                rejected.add(CalendarDay.from(year, month, day));
+            }
+            else if (events.get(i).getStatus().equals("accepted")) {
+                String[] temp = events.get(i).getDate().split("/");
+                int year = Integer.parseInt(temp[2]);
+                int month = Integer.parseInt(temp[1]);
+                int day = Integer.parseInt(temp[0]);
+                accepted.add(CalendarDay.from(year, month, day));
+            }
+        }
+        widget.removeDecorators();
+        widget.addDecorator(new EventDecorator(Color.GREEN, accepted));
+        widget.addDecorator(new EventDecorator(Color.RED, rejected));
+        //eventsAdapter.setEvents(response.stream().filter(it -> !it.getStatus().equals("delete")).collect(Collectors.toList()));
+        //eventsAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -213,7 +223,11 @@ public class CalendarViewFragment extends Fragment implements OnDateLongClickLis
         ArrayList<Response> filtered = new ArrayList<>();
         for (int i = 0; i < events.size(); i++) {
             if (events.get(i).equals(date) && !events.get(i).getStatus().equals("delete")) {
-                filtered.add(events.get(i));
+                if (User.getInstance().getType().equals("service") && !events.get(i).getStatus().equals("rejected")) {
+                    filtered.add(events.get(i));
+                } else if (User.getInstance().getType().equals("driver")) {
+                    filtered.add(events.get(i));
+                }
             }
         }
         if (eventsAdapter == null) {
@@ -228,5 +242,11 @@ public class CalendarViewFragment extends Fragment implements OnDateLongClickLis
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         startContext = context;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Requests.Companion.setRunning(false);
     }
 }

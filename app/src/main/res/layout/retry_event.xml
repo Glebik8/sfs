@@ -30,7 +30,7 @@
             android:layout_marginTop="4dp" android:textSize="18sp"/>
     <TextView
             android:textColor="@color/ios_blue"
-            android:text="Повторить"
+            android:text="Повторить запись"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/retry"

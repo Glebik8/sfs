@@ -1,16 +1,11 @@
 package com.blackfish.a1pedal.API
 
-import com.blackfish.a1pedal.ProfileInfo.Profile_Info
-import com.blackfish.a1pedal.ProfileInfo.User
 import com.blackfish.a1pedal.data.*
-import com.blackfish.a1pedal.tools_class.PostRes
-import com.google.gson.annotations.SerializedName
 import kotlinx.coroutines.*
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.*
 
 class Requests {
 
@@ -32,11 +27,17 @@ class Requests {
                 .build()
         val api: API = retrofit.create(API::class.java)
 
-        fun start() {
+        fun start(callback: (List<Response>) -> Unit) {
             if (isRunning) {
                 return
             }
-            GlobalScope.launch {
+            isRunning = true
+            CoroutineScope(Dispatchers.Main).launch {
+                while (true) {
+                    val events = getEvents()
+                    callback(events)
+                    delay(10 * 1000)
+                }
 
             }
         }
@@ -55,9 +56,19 @@ class Requests {
             }
         }
 
-        fun performRequestByNumber(phone: String, type: String, callback: (UpdateInfo) -> Unit) {
+        fun performRequestById(id: String, type: String, callback: (UpdateInfo) -> Unit) {
             CoroutineScope(Dispatchers.Main).launch {
+                val phone = CoroutineScope(Dispatchers.Main).async {
+                    api.getInfoById(id).phone
+                }.await()
                 val response = api.performRequest(UpdateRequest(type, phone))
+                callback(response)
+            }
+        }
+
+        fun performRequestByNumber(number: String, type: String, callback: (UpdateInfo) -> Unit) {
+            CoroutineScope(Dispatchers.Main).launch {
+                val response = api.performRequest(UpdateRequest(type, number))
                 callback(response)
             }
         }
@@ -82,6 +93,11 @@ class Requests {
                 val response = api.getEvents(id)
                 callback(response)
             }
+        }
+
+        suspend fun getEvents(id: String = "")  = withContext(Dispatchers.Main) {
+            val response = api.getEvents(id)
+            response
         }
 
         fun updateEvent(eventId: Int, status: String, callback: (Response) -> Unit) {

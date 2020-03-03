@@ -12,6 +12,8 @@ import com.blackfish.a1pedal.API.Requests;
 import com.blackfish.a1pedal.Calendar_block.CalendarActivity;
 import com.blackfish.a1pedal.ProfileInfo.Chats;
 import com.blackfish.a1pedal.ProfileInfo.Profile_Info;
+import com.blackfish.a1pedal.data.UpdateInfo;
+import com.blackfish.a1pedal.tools_class.DataApdaterFriend;
 import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 
@@ -68,23 +70,33 @@ public class InformationActivity extends AppCompatActivity {
                 // TODO
             }
         }
-        friendRemove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String number = friendLists.get(currentPosition).getPk();
-                if (number == null || number.equals("")) {
-                    return;
-                }
+        friendRemove.setOnClickListener(v -> {
+            String number = friendLists.get(currentPosition).getPk();
+            if (number == null || number.equals("")) {
+                return;
             }
+            Requests.Companion.performRequestByNumber(number, "delete", (UpdateInfo response) -> {
+                friendLists.remove(currentPosition);
+                if (FriendFragment.apdaterFriend != null) {
+                    FriendFragment.apdaterFriend.notifyDataSetChanged();
+                }
+                onBackPressed();
+                return null;
+            });
         });
-        friendBlock.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String number = friendLists.get(currentPosition).getPk();
-                if (number == null || number.equals("")) {
-                    return;
-                }
+        friendBlock.setOnClickListener(v -> {
+            String number = friendLists.get(currentPosition).getPk();
+            if (number == null || number.equals("")) {
+                return;
             }
+            Requests.Companion.performRequestByNumber(number, "block", (UpdateInfo response) -> {
+                friendLists.remove(currentPosition);
+                if (FriendFragment.apdaterFriend != null) {
+                    FriendFragment.apdaterFriend.notifyDataSetChanged();
+                }
+                onBackPressed();
+                return null;
+            });
         });
         friendPush.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -117,21 +117,15 @@ class EventsAdapter(
 
                 accept.setOnClickListener {
                     Requests.updateEvent(eventsPk, "accepted") {
-                        Requests.getEvents {
-                            events = it
-                            notifyDataSetChanged()
-                        }
+                        events.removeAt(adapterPosition)
+                        notifyDataSetChanged()
                     }
                 }
 
                 deny.setOnClickListener {
                     Requests.updateEvent(eventsPk, "rejected") {
-                        Requests.getEvents { list ->
-                            events = list.filter {
-                                it.status != "rejected"
-                            }.toMutableList()
-                            notifyDataSetChanged()
-                        }
+                        events.removeAt(adapterPosition)
+                        notifyDataSetChanged()
                     }
                 }
             }

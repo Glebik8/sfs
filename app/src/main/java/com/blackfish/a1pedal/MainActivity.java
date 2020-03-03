@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import androidx.annotation.NonNull;
 
 
@@ -21,6 +22,8 @@ import com.droidnet.DroidListener;
 import com.droidnet.DroidNet;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationItemView;
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -31,6 +34,7 @@ import android.widget.TextView;
 
 import com.blackfish.a1pedal.ProfileInfo.Profile_Info;
 import com.blackfish.a1pedal.ProfileInfo.User;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 

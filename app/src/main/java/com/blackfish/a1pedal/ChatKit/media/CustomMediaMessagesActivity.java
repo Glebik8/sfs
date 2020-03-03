@@ -29,6 +29,7 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import com.blackfish.a1pedal.*;
 import com.blackfish.a1pedal.Auth_Registr.LoginActivity;
+import com.blackfish.a1pedal.Calendar_block.CalendarActivity;
 import com.blackfish.a1pedal.ChatKit.DemoMessagesActivity;
 import com.blackfish.a1pedal.ChatKit.media.holders.IncomingVoiceMessageViewHolder;
 import com.blackfish.a1pedal.ChatKit.media.holders.OutcomingVoiceMessageViewHolder;
@@ -164,7 +165,8 @@ public class CustomMediaMessagesActivity extends DemoMessagesActivity
 
         CalendarMeetText.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(CustomMediaMessagesActivity.this, InformationActivity.class);
+                Intent intent = new Intent(CustomMediaMessagesActivity.this, CalendarActivity.class);
+               // intent.putExtra("index", )
                 startActivity(intent);
                 // сообщаем о старте задачи
             }
