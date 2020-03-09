@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:id="@+id/bottom_sheet"
+              android:layout_width="match_parent"
+              android:layout_height="340dp"
+              android:orientation="vertical"
+              app:behavior_hideable="true"
+              app:behavior_peekHeight="80dp"
+              app:layout_behavior="@string/bottom_sheet_behavior">
+
+
+    <TextView
+            android:text="Name"
+            android:textSize="30sp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:id="@+id/sheet_chat"/>
+    <TextView
+            android:text="Принять"
+            android:textSize="30sp"
+            android:textColor="@color/ios_blue"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:id="@+id/sheet_name"/>
+    <TextView
+            android:text="Чат"
+            android:textSize="30sp"
+            android:textColor="@color/ios_blue"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:id="@+id/sheet_accept"/>
+    <TextView
+            android:text="Изменить"
+            android:textSize="30sp"
+            android:textColor="@color/ios_blue"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:id="@+id/sheet_change"/>
+    <TextView
+            android:text="Отменить"
+            android:textSize="30sp"
+            android:textColor="@color/red"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:id="@+id/sheet_deny"/>
+</LinearLayout>

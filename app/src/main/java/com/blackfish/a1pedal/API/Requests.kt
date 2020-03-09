@@ -1,5 +1,6 @@
 package com.blackfish.a1pedal.API
 
+import com.blackfish.a1pedal.ProfileInfo.User
 import com.blackfish.a1pedal.data.*
 import kotlinx.coroutines.*
 import okhttp3.OkHttpClient
@@ -36,7 +37,7 @@ class Requests {
                 while (true) {
                     val events = getEvents()
                     callback(events)
-                    delay(10 * 1000)
+                    delay(4 * 1000)
                 }
 
             }
@@ -83,7 +84,13 @@ class Requests {
 
         fun updateCalendar(date: String, time: String, serviceId: String, driverId: String, status: String, callback: (Response) -> Unit) {
             CoroutineScope(Dispatchers.Main).launch {
-                val response = api.updateCalendar(Request(time, date, serviceId, driverId, status))
+                val correctStatus = if (status != "new") status else {
+                    if (User.getInstance().isDriver)
+                        "waitingS"
+                    else
+                        "waitingD"
+                }
+                val response = api.updateCalendar(Request(time, date, serviceId, driverId, correctStatus))
                 callback(response)
             }
         }
@@ -103,6 +110,34 @@ class Requests {
         fun updateEvent(eventId: Int, status: String, callback: (Response) -> Unit) {
             CoroutineScope(Dispatchers.Main).launch {
                 val response = api.updateEventsStatus(EventUpdate(eventId, status))
+                callback(response)
+            }
+        }
+
+        fun deleteEvent(eventId: Int, callback: (StatusRequest) -> Unit) {
+            CoroutineScope(Dispatchers.Main).launch {
+                val response = api.deleteEvent(DeleteRequest(eventId))
+                callback(response)
+            }
+        }
+
+        fun sendMessage(sender: Int, recipient: Int, chatId: Int, content: String, callback: (Any) -> Unit) {
+            CoroutineScope(Dispatchers.Default).launch {
+                val response = api.sendMessage(MessageRequest(sender, recipient, "text", chatId, content))
+                callback(response)
+            }
+        }
+
+        fun createDialog(sender: Int, recipient: Int, callback: (Any) -> Unit) {
+            CoroutineScope(Dispatchers.Default).launch {
+                val response = api.createDialog(CreateDialogRequest(sender, recipient, "text", "Привет!"))
+                callback(response)
+            }
+        }
+
+        fun getDialogs(callback: (List<DialogInfo>) -> Unit) {
+            CoroutineScope(Dispatchers.Main).launch {
+                val response = api.getDialogs()
                 callback(response)
             }
         }

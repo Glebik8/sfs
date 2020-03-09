@@ -45,61 +45,72 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FriendFragment   extends Fragment implements DroidListener {
+public class FriendFragment extends Fragment implements DroidListener {
 
     private FriendsInfo friendLists;
+
     public FriendFragment() {
     }
 
     public static FriendFragment newInstance() {
         return new FriendFragment();
     }
+
     private DroidNet mDroidNet;
     public static DataApdaterFriend apdaterFriend;
     RecyclerView recyclerView;
     TextView ContNameText;
     ImageView AddImage;
     LinearLayout WaitInt;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.contacts_fram, container, false);
-        AddImage=  view.findViewById(R.id.AddImage);
-        ContNameText =  view.findViewById(R.id.ContNameText);
-        WaitInt  =  view.findViewById(R.id.WaitInt);
+        AddImage = view.findViewById(R.id.AddImage);
+        ContNameText = view.findViewById(R.id.ContNameText);
+        WaitInt = view.findViewById(R.id.WaitInt);
         recyclerView = (RecyclerView) view.findViewById(R.id.friendList);
         mDroidNet = DroidNet.getInstance();
         mDroidNet.addInternetConnectivityListener(this);
-        if (User.getInstance().getType().equals("driver"))
-        {
+        if (User.getInstance().getType().equals("driver")) {
             ContNameText.setText("Сервисы");
-        }
-        else
-        {
+        } else {
             ContNameText.setText("Подписчики");
         }
+        String a = (User.getInstance().isDriver() ? "Сервисы" : "Подписчики");
+        ContNameText.setOnClickListener(v -> {
+            if (ContNameText.getText() == a) {
+                ContNameText.setText("Заявки");
+            } else {
+                ContNameText.setText(a);
+            }
+            apdaterFriend.friendsOnly = !apdaterFriend.friendsOnly;
+            apdaterFriend.notifyDataSetChanged();
+        });
         AddImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if (User.getInstance().getType().equals("driver"))
-                {
+                if (User.getInstance().getType().equals("driver")) {
                     Intent intent = new Intent(getActivity(), AddSFriend.class);
                     startActivity(intent);
-                }
-                else
-
-                {  String k ;
-                    if (User.getInstance().getName()!=null && !User.getInstance().getName().equals(""))
-                      { k = User.getInstance().getName();   }
-                    else {k =  User.getInstance().getFio();  }
+                } else {
+                    String k;
+                    if (User.getInstance().getName() != null && !User.getInstance().getName().equals("")) {
+                        k = User.getInstance().getName();
+                    } else {
+                        k = User.getInstance().getFio();
+                    }
                     Intent sendIntent = new Intent();
                     sendIntent.setAction(Intent.ACTION_SEND);
                     sendIntent.putExtra(Intent.EXTRA_TEXT,
-                            "Привет, мы используем приложение для автомобилистов 1pedal.  Скачать : https://play.google.com/....\nПодпишись на наш сервис по номеру " + User.getInstance().getPhone() + "\nС уважением команда  " +  User.getInstance().getFio() + ".");
+                            "Привет, мы используем приложение для автомобилистов 1pedal.  Скачать : https://play.google.com/....\nПодпишись на наш сервис по номеру " + User.getInstance().getPhone() + "\nС уважением команда  " + User.getInstance().getFio() + ".");
                     sendIntent.setType("text/plain");
-                    startActivity(sendIntent); }
-            }});
+                    startActivity(sendIntent);
+                }
+            }
+        });
         return view;
     }
 
@@ -115,7 +126,7 @@ public class FriendFragment   extends Fragment implements DroidListener {
         }
     }
 
-    private void netIsOn(){
+    private void netIsOn() {
         ContNameText.setVisibility(View.VISIBLE);
         AddImage.setVisibility(View.VISIBLE);
         WaitInt.setVisibility(View.GONE);
@@ -139,19 +150,19 @@ public class FriendFragment   extends Fragment implements DroidListener {
         );
 
     }
-    private void netIsOff(){
+
+    private void netIsOff() {
         ContNameText.setVisibility(View.GONE);
         AddImage.setVisibility(View.GONE);
         WaitInt.setVisibility(View.VISIBLE);
         recyclerView.setAdapter(null);
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         mDroidNet.removeInternetConnectivityChangeListener(this);
     }
-
-
 
 
 }

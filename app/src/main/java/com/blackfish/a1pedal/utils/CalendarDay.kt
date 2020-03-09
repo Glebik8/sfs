@@ -13,3 +13,9 @@ fun correctDate(calendarDay: CalendarDay): String {
     }
 }
 
+fun String.toCalendarDay(): CalendarDay {
+    // "12/18/2020"
+    val values = split('/').map(String::toInt)
+    return CalendarDay.from(values[2], values[1], values[0])
+}
+

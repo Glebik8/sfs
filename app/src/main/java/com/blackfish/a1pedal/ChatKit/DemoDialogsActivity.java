@@ -24,7 +24,7 @@ public abstract class DemoDialogsActivity extends Fragment
         DialogsListAdapter.OnDialogLongClickListener<Dialog> {
 
     protected ImageLoader imageLoader;
-    protected DialogsListAdapter<Dialog> dialogsAdapter;
+    public static DialogsListAdapter<Dialog> dialogsAdapter;
 
 
     @Override

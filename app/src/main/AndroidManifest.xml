@@ -30,6 +30,8 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
+        <activity android:name=".EventsArchive">
+        </activity>
         <activity android:name=".Calendar_block.CalendarActivity">
         </activity>
         <activity android:name=".InformationActivity">

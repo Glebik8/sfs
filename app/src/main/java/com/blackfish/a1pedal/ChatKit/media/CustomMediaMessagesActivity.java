@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -30,6 +31,7 @@ import androidx.fragment.app.Fragment;
 import com.blackfish.a1pedal.*;
 import com.blackfish.a1pedal.Auth_Registr.LoginActivity;
 import com.blackfish.a1pedal.Calendar_block.CalendarActivity;
+import com.blackfish.a1pedal.Calendar_block.EventsAdapter;
 import com.blackfish.a1pedal.ChatKit.DemoMessagesActivity;
 import com.blackfish.a1pedal.ChatKit.media.holders.IncomingVoiceMessageViewHolder;
 import com.blackfish.a1pedal.ChatKit.media.holders.OutcomingVoiceMessageViewHolder;
@@ -165,8 +167,7 @@ public class CustomMediaMessagesActivity extends DemoMessagesActivity
 
         CalendarMeetText.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(CustomMediaMessagesActivity.this, CalendarActivity.class);
-               // intent.putExtra("index", )
+                Intent intent = new Intent(CustomMediaMessagesActivity.this, EventsArchive.class);
                 startActivity(intent);
                 // сообщаем о старте задачи
             }
@@ -179,6 +180,10 @@ public class CustomMediaMessagesActivity extends DemoMessagesActivity
         input.setAttachmentsListener(this);
         input.setTypingListener(this);
         initAdapter();
+    }
+
+    public void openDialog() {
+
     }
 
     public void showTyp() {

@@ -42,4 +42,28 @@ interface API {
             @Header("Authorization") auth: String = "Token " + Profile_Info.getInstance().token
     ): Response
 
+    @POST("sendmessage/")
+    suspend fun sendMessage(
+            @Body request: MessageRequest,
+            @Header("Authorization") auth: String = "Token " + Profile_Info.getInstance().token
+    ): SendRequest
+
+    @POST("deletecalendarevent/")
+    suspend fun deleteEvent(
+            @Body request: DeleteRequest,
+            @Header("Authorization") auth: String = "Token " + Profile_Info.getInstance().token
+    ): StatusRequest
+
+
+    @GET("getchats/")
+    suspend fun getDialogs(
+            @Header("Authorization") auth: String = "Token " + Profile_Info.getInstance().token
+    ): List<DialogInfo>
+
+    @POST("sendmessage/")
+    suspend fun createDialog(
+            @Body request: CreateDialogRequest,
+            @Header("Authorization") auth: String = "Token " + Profile_Info.getInstance().token
+    ): SendRequest
+
 }

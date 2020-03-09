@@ -53,14 +53,9 @@ public class RegisterAdapter extends RecyclerView.Adapter<RegisterAdapter.Card> 
                 public void onClick(View v) {
                     if (clickedDate == null || currentPosition == -1)
                         return;
-                    String pk = "";
-                    if (friendLists != null)
-                        pk = friendLists.get(currentPosition).getPk();
-                    else
-                        pk = friendsInfo.get(currentPosition).getPk();
                     Requests.Companion.updateCalendar(
                             correctDate(clickedDate), time,
-                            pk,  User.getInstance().getPk(), "new",
+                            CalendarActivity.serviceId,  CalendarActivity.driverId, "new",
                             (Response response) -> {
                                 Toast.makeText(context,
                                         "Заявка №" + (response.getPk()) + " подана",

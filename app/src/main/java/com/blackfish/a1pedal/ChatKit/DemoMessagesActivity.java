@@ -258,7 +258,7 @@ public abstract class DemoMessagesActivity extends AppCompatActivity
 
     public void netIsOn(){
         intr = 1;
-        if (!Chats.getInstance().getChat_id().equals("newDialog"))
+        if (Chats.getInstance().getChat_id() != null && !Chats.getInstance().getChat_id().equals("newDialog"))
         {
             messages = Save.loadMessages(Chats.getInstance().getChat_id() , DemoMessagesActivity.this);
             if (messages!=null){

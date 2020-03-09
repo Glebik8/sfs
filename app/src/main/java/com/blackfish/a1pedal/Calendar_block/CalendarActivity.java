@@ -1,6 +1,8 @@
 package com.blackfish.a1pedal.Calendar_block;
 
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import androidx.annotation.NonNull;
@@ -21,12 +23,24 @@ public class CalendarActivity extends AppCompatActivity implements OnDateSelecte
     RecyclerView recyclerView;
     MaterialCalendarView widget;
 
+    public static String serviceId;
+    public static String driverId;
+
+    public static void open(Context context, String sId, String dId) {
+        serviceId = sId;
+        driverId = dId;
+        context.startActivity(new Intent(context, CalendarActivity.class));
+    }
+
+    public static void open(Context context, String type) {
+
+    }
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
-
         widget = findViewById(R.id.check);
         widget.setOnDateChangedListener(this);
         recyclerView = findViewById(R.id.regRecycler);

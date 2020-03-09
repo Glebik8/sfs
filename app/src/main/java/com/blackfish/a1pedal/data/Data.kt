@@ -1,7 +1,11 @@
 package com.blackfish.a1pedal.data
 
+import android.os.Parcelable
+import com.blackfish.a1pedal.ProfileInfo.User
 import com.google.gson.annotations.SerializedName
 import com.prolificinteractive.materialcalendarview.CalendarDay
+import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup
+import kotlinx.android.parcel.Parcelize
 
 data class Request(
         val time: String,
@@ -13,6 +17,7 @@ data class Request(
         val status: String
 )
 
+@Parcelize
 data class Response(
         val pk: Int,
         val createdBy: Int,
@@ -22,15 +27,26 @@ data class Response(
         val driver: Info,
         val status: String,
         val message: String
-) {
+) : Parcelable {
+
+        val isNew
+                get() = status == "new"
+        val name
+                get() = if (User.getInstance().isDriver) service.name else driver.name
+
+        val notMe
+                get() = if (User.getInstance().isDriver) service else driver
+
         override fun equals(other: Any?): Boolean {
                 if (other !is CalendarDay)
                         return false
                 val (a, b, c) = date.split('/').map(String::toInt)
                 return !(a != other.day || b != other.month || c != other.year)
         }
+
 }
 
+@Parcelize
 data class Info(
         val pk: String,
         val fio: String,
@@ -44,7 +60,7 @@ data class Info(
         val work: String,
         @SerializedName("last_activity")
         val lastActivity: String
-)
+) : Parcelable
 
 
 data class UserInfo(
@@ -89,7 +105,7 @@ data class UpdateInfo(
 )
 
 data class Friends(
-
+        @JvmField
         @SerializedName("user_friends")
         val userFriends: MutableList<Info>
 )
@@ -102,12 +118,47 @@ data class UpdateRequest(
 data class FriendRequest(
         val sender: Info,
         val recipient: Info
-)
+) {
+        val notMe
+                get() = if (User.getInstance().isDriver) recipient else sender
+}
 
 data class EventUpdate(
         @SerializedName("calendar_item_id")
         val calendarItemId: Int,
         val status: String
+
+)
+class ArchiveEvent(
+        val content: String,
+        val event: List<Response>
+): ExpandableGroup<Response>(content, event)
+
+
+data class MessageRequest(
+        val sender: Int,
+        val recipient: Int,
+        val type: String,
+        @SerializedName("chat_id")
+        val chatId: Int,
+        val content: String
+)
+
+data class DeleteRequest(
+        @SerializedName("calendar_item_id")
+        val calendarItemId: Int
+)
+
+data class StatusRequest(
+        val status: String,
+        val msg: String
+)
+
+data class CreateDialogRequest(
+        val sender: Int,
+        val recipient: Int,
+        val type: String,
+        val content: String
 )
 
 data class FriendsInfo(
@@ -120,10 +171,10 @@ data class FriendsInfo(
                 if (position < friends?.userFriends?.size ?: 0) {
                         return friends!!.userFriends[position]
                 }
-                return requests?.get(position - (friends?.userFriends?.size ?: 0))?.recipient
+                return requests?.get(position - (friends?.userFriends?.size ?: 0))?.notMe
         }
 
-        fun isRequest(position: Int) = position < friends?.userFriends?.size ?: 0
+        fun isFriend(position: Int) = position < friends?.userFriends?.size ?: 0
 
         fun size() = (friends?.userFriends?.size ?: 0) + (requests?.size ?: 0)
 
@@ -138,7 +189,7 @@ data class FriendsInfo(
         fun makeFriend(position: Int) {
                 val copy = requests!![position - (friends?.userFriends?.size ?: 0)]
                 requests!!.removeAt(position - (friends?.userFriends?.size ?: 0))
-                friends!!.userFriends.add(copy.recipient)
+                friends!!.userFriends.add(copy.notMe)
         }
 
         fun filter(check: (FriendRequest) -> Info) {

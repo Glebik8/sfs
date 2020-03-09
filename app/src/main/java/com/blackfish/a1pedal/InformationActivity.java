@@ -12,6 +12,7 @@ import com.blackfish.a1pedal.API.Requests;
 import com.blackfish.a1pedal.Calendar_block.CalendarActivity;
 import com.blackfish.a1pedal.ProfileInfo.Chats;
 import com.blackfish.a1pedal.ProfileInfo.Profile_Info;
+import com.blackfish.a1pedal.ProfileInfo.User;
 import com.blackfish.a1pedal.data.UpdateInfo;
 import com.blackfish.a1pedal.tools_class.DataApdaterFriend;
 import com.bumptech.glide.Glide;
@@ -75,7 +76,7 @@ public class InformationActivity extends AppCompatActivity {
             if (number == null || number.equals("")) {
                 return;
             }
-            Requests.Companion.performRequestByNumber(number, "delete", (UpdateInfo response) -> {
+            Requests.Companion.performRequestById(number, "delete", (UpdateInfo response) -> {
                 friendLists.remove(currentPosition);
                 if (FriendFragment.apdaterFriend != null) {
                     FriendFragment.apdaterFriend.notifyDataSetChanged();
@@ -89,7 +90,7 @@ public class InformationActivity extends AppCompatActivity {
             if (number == null || number.equals("")) {
                 return;
             }
-            Requests.Companion.performRequestByNumber(number, "block", (UpdateInfo response) -> {
+            Requests.Companion.performRequestById(number, "block", (UpdateInfo response) -> {
                 friendLists.remove(currentPosition);
                 if (FriendFragment.apdaterFriend != null) {
                     FriendFragment.apdaterFriend.notifyDataSetChanged();
@@ -98,12 +99,18 @@ public class InformationActivity extends AppCompatActivity {
                 return null;
             });
         });
-        friendPush.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(InformationActivity.this, CalendarActivity.class);
-                startActivity(intent);
+        friendPush.setOnClickListener(v -> {
+            String a = "";
+            String b = "";
+            if (!User.getInstance().isDriver()) {
+                a = User.getInstance().getPk();
+                b = friendLists.get(currentPosition).getPk();
+            } else {
+                b = User.getInstance().getPk();
+                a = friendLists.get(currentPosition).getPk();
             }
+            CalendarActivity.open(getApplicationContext(),
+                    a, b);
         });
     }
 }

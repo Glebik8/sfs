@@ -14,6 +14,10 @@ public class User {
         return dataObject;
     }
 
+    public boolean isDriver() {
+        return type.equals("driver");
+    }
+
     private String pk;
     private String email;
     private String fio;

@@ -49,6 +49,7 @@ public class DataApdaterFriend extends RecyclerView.Adapter<DataApdaterFriend.Vi
     private LayoutInflater inflater;
     public static FriendsInfo friendLists;
     public static int currentPosition;
+    public boolean friendsOnly = true;
 
     public DataApdaterFriend(Context context, FriendsInfo friendList) {
         activity=context;
@@ -59,7 +60,7 @@ public class DataApdaterFriend extends RecyclerView.Adapter<DataApdaterFriend.Vi
 
     @Override
     public int getItemViewType(int position) {
-        if (friendLists.isRequest(position))
+        if (friendLists.isFriend(position))
             return 0;
         return 1;
     }
@@ -75,47 +76,43 @@ public class DataApdaterFriend extends RecyclerView.Adapter<DataApdaterFriend.Vi
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        Info friendList = friendLists.get(position);
+    public void onBindViewHolder(ViewHolder holder, int position2) {
+        int correct = position2;
+        if (!friendsOnly) {
+            correct += friendLists.friends.userFriends.size();
+        }
+        Info friendList = friendLists.get(correct);
         if (friendList == null)
             return;
-        if (friendLists.isRequest(position)) {
+        if (friendLists.isFriend(correct)) {
             holder.requests.setVisibility(View.INVISIBLE);
         } else {
-            if (friendList.getPk().equals(User.getInstance().getPk())) {
+            if (User.getInstance().isDriver()) {
                 holder.accept.setVisibility(View.INVISIBLE);
                 holder.deny.setVisibility(View.INVISIBLE);
             } else {
                 holder.requestSend.setVisibility(View.INVISIBLE);
             }
-            holder.accept.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Requests.Companion.performRequestByNumber(
-                            friendLists.get(position).phone,
-                            "add",
-                            (UpdateInfo response) -> {
-                                friendLists.makeFriend(position);
-                                notifyDataSetChanged();
-                                return null;
-                            }
-                    );
-                }
-            });
-            holder.deny.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Requests.Companion.performRequestByNumber(
-                            friendLists.get(position).phone,
-                            "delete",
-                            (UpdateInfo response) -> {
-                                friendLists.remove(position);
-                                notifyDataSetChanged();
-                                return null;
-                            }
-                    );
-                }
-            });
+            int finalCorrect = correct;
+            holder.accept.setOnClickListener(v -> Requests.Companion.performRequestByNumber(
+                    friendLists.get(finalCorrect).phone,
+                    "add",
+                    (UpdateInfo response) -> {
+                        friendLists.makeFriend(finalCorrect);
+                        notifyDataSetChanged();
+                        return null;
+                    }
+            ));
+            int finalCorrect1 = correct;
+            holder.deny.setOnClickListener(v -> Requests.Companion.performRequestByNumber(
+                    friendLists.get(finalCorrect1).phone,
+                    "delete",
+                    (UpdateInfo response) -> {
+                        friendLists.remove(finalCorrect1);
+                        notifyDataSetChanged();
+                        return null;
+                    }
+            ));
         }
         try {
             if (!friendList.getPhoto().equals("")) {
@@ -155,6 +152,7 @@ public class DataApdaterFriend extends RecyclerView.Adapter<DataApdaterFriend.Vi
 
             }
 
+            int finalCorrect2 = correct;
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -166,7 +164,7 @@ public class DataApdaterFriend extends RecyclerView.Adapter<DataApdaterFriend.Vi
                     } else {
                         Chats.getInstance().setTittle_mess(friendList.getName());
                     }
-                    currentPosition = position;
+                    currentPosition = finalCorrect2;
                     InformationActivity.start(activity);
                 }
             });
@@ -177,7 +175,7 @@ public class DataApdaterFriend extends RecyclerView.Adapter<DataApdaterFriend.Vi
 
     @Override
     public int getItemCount() {
-        return friendLists.size();
+        return (friendsOnly ? friendLists.friends.userFriends.size() :  friendLists.requests.size());
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

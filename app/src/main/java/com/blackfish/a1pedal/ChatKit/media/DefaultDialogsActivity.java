@@ -58,7 +58,7 @@ import static com.blackfish.a1pedal.tools_class.DataApdaterFriend.friendLists;
 public class DefaultDialogsActivity extends DemoDialogsActivity implements DroidListener {
 
     private DroidNet mDroidNet;
-    ArrayList<Dialog> chats = new ArrayList<>();
+    public ArrayList<Dialog> chats = new ArrayList<>();
     JSONArray   kol;
     public final static String BROADCAST_ACTION ="com.blackfish.a1pedal.ChatKit.media";
     BroadcastReceiver br;
@@ -67,7 +67,7 @@ ImageView AddImage;
     TextView ContNameText;
     LinearLayout WaitInt;
     Context ct;
-    int lastChat = -1;
+    public static String lastChat = null;
     public static void open(Context context) {
        // context.startActivity(new Intent(context, DefaultDialogsActivity.class));
     }
@@ -89,10 +89,6 @@ ImageView AddImage;
         Chats.getInstance().setActual_activity("0"); dialogsList = (DialogsList) view.findViewById(R.id.dialogsList);
         mDroidNet = DroidNet.getInstance();
         mDroidNet.addInternetConnectivityListener(this);
-
-
-
-
          Chats.getInstance().setPath(getActivity().getExternalCacheDir());
 
         AddImage.setOnClickListener(new View.OnClickListener() {
@@ -144,7 +140,7 @@ ImageView AddImage;
            Chats.getInstance().setRecipient_id(rep);
            Chats.getInstance().setLastActivity(us.getLastActivity());
            Chats.getInstance().setTittle_mess(us.getName());
-           //lastChat = Chats.getInstance().getChat_id();
+           lastChat = Chats.getInstance().getRecipient_id();
             Log.d("glebik", Chats.getInstance().getChat_id());
            ArrayList<Chats.UnreadChats> uc = Chats.getInstance().getUnread_chats_count();
            ArrayList<Chats.UnreadChats> uc3 = new ArrayList<>();
@@ -175,7 +171,6 @@ ImageView AddImage;
                    dd.setUnreadCount(0);
                }
            }
-           initAdapter();
         CustomMediaMessagesActivity.open(getActivity(), -1);
     }
     private void initAdapter() {
@@ -209,7 +204,7 @@ ImageView AddImage;
         dialogsAdapter.addItem(dialog);
     }
 
-    private  class GetDialogs extends AsyncTask<Void, Void, String> {
+    class GetDialogs extends AsyncTask<Void, Void, String> {
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
         String resultJson = "";
@@ -259,7 +254,7 @@ ImageView AddImage;
             }catch (JSONException ignored){
                 String f = ignored.toString();
             }
-        }
+         }
     }
 
     public void showFragment(Fragment fragment) {
